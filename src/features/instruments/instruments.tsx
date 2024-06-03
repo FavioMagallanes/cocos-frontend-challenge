@@ -1,5 +1,5 @@
 import { SearchInput } from "@/components/shared";
-import { IntrumentsTable } from "@/components/tables";
+import { InstrumentsTable } from "@/components/tables";
 
 export const Instruments = () => {
   return (
@@ -8,7 +8,7 @@ export const Instruments = () => {
         <SearchInput />
       </div>
       <div className="mt-12">
-        <IntrumentsTable />
+        <InstrumentsTable />
       </div>
     </>
   );
