@@ -8,10 +8,10 @@ type MainLayoutProps = {
 
 export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <main>{children}</main>
+      <main className="flex-grow p-12">{children}</main>
       <Footer />
-    </>
+    </div>
   );
 };

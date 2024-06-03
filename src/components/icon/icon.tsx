@@ -6,14 +6,15 @@ const fallback = <div style={{ background: "#ddd", width: 24, height: 24 }} />;
 
 interface IconProps extends Omit<LucideProps, "ref"> {
   name: keyof typeof dynamicIconImports;
+  size?: number;
 }
 
-export const Icon: FC<IconProps> = ({ name, ...props }) => {
+export const Icon: FC<IconProps> = ({ name, size, ...props }) => {
   const LucideIcon = lazy(dynamicIconImports[name]);
 
   return (
     <Suspense fallback={fallback}>
-      <LucideIcon {...props} />
+      <LucideIcon {...props} size={size} />
     </Suspense>
   );
 };

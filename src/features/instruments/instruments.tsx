@@ -1,3 +1,15 @@
+import { SearchInput } from "@/components/shared";
+import { IntrumentsTable } from "@/components/tables";
+
 export const Instruments = () => {
-  return <div>Instruments</div>;
+  return (
+    <>
+      <div>
+        <SearchInput />
+      </div>
+      <div className="mt-12">
+        <IntrumentsTable />
+      </div>
+    </>
+  );
 };
