@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { Instruments } from "@/api";
-import { OrderItem, OrderResponse } from "@/api/types";
+import { Instruments, OrderItem, OrderResponse } from "@/api";
 import { useSubmitOrder } from "@/features/orders/hooks/use-submit-order";
 import { toast } from "sonner";
 
@@ -8,43 +6,22 @@ export const useOrderForm = (
   instrument: Instruments | null,
   onClose: () => void
 ) => {
-  const [operation, setOperation] = useState<"BUY" | "SELL">("BUY");
-  const [type, setType] = useState<"MARKET" | "LIMIT">("MARKET");
-  const [price, setPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-
   const submitOrderMutation = useSubmitOrder();
 
-  const resetForm = () => {
-    setOperation("BUY");
-    setType("MARKET");
-    setPrice("");
-    setQuantity("");
-  };
-
-  const showDetailToast = (response: OrderResponse, orderItem: OrderItem) => {
-    const content = `
-      📋 Detalles de Orden #${response.id}
-      📊 Estado: ${response.status}
-      🏷️ ${instrument?.name} (${instrument?.ticker})
-      ${operation === "BUY" ? "🛒 Compra" : "💰 Venta"}
-      ${type === "MARKET" ? "🌍 Mercado" : "🎯 Límite"}
-      🔢 Cantidad: ${orderItem.quantity}
-      💵 Precio: ${orderItem.price ? `ARS ${orderItem.price}` : "Mercado"}
-    `;
-    toast.info(content, { duration: 7000 });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (data: {
+    operation: "BUY" | "SELL";
+    type: "MARKET" | "LIMIT";
+    price?: number;
+    quantity: number;
+  }) => {
     if (!instrument) return;
 
     const orderItem: OrderItem = {
       instrument_id: instrument.id,
-      side: operation,
-      type,
-      quantity: parseInt(quantity),
-      ...(type === "LIMIT" && { price: parseFloat(price) }),
+      side: data.operation,
+      type: data.type,
+      quantity: data.quantity,
+      ...(data.type === "LIMIT" && { price: data.price }),
     };
 
     try {
@@ -54,9 +31,13 @@ export const useOrderForm = (
         response.status === "FILLED" ? "ejecutada" : "enviada"
       } con éxito.
         ${instrument.ticker} ${
-        operation === "BUY" ? "compradas" : "vendidas"
+        data.operation === "BUY" ? "compradas" : "vendidas"
       }: ${orderItem.quantity}
-        ${type === "LIMIT" ? `a ARS ${orderItem.price}` : "a precio de mercado"}
+        ${
+          data.type === "LIMIT"
+            ? `a ARS ${orderItem.price}`
+            : "a precio de mercado"
+        }
       `;
       toast.success(toastMessage, {
         duration: 5000,
@@ -65,7 +46,6 @@ export const useOrderForm = (
           onClick: () => showDetailToast(response, orderItem),
         },
       });
-      resetForm();
       onClose();
     } catch (error) {
       toast.error(`Error al enviar la orden: ${(error as Error).message}`, {
@@ -74,15 +54,20 @@ export const useOrderForm = (
     }
   };
 
+  const showDetailToast = (response: OrderResponse, orderItem: OrderItem) => {
+    const content = `
+      📋 Detalles de Orden #${response.id}
+      📊 Estado: ${response.status}
+      🏷️ ${instrument?.name} (${instrument?.ticker})
+      ${orderItem.side === "BUY" ? "🛒 Compra" : "💰 Venta"}
+      ${orderItem.type === "MARKET" ? "🌍 Mercado" : "🎯 Límite"}
+      🔢 Cantidad: ${orderItem.quantity}
+      💵 Precio: ${orderItem.price ? `ARS ${orderItem.price}` : "Mercado"}
+    `;
+    toast.info(content, { duration: 7000 });
+  };
+
   return {
-    operation,
-    setOperation,
-    type,
-    setType,
-    price,
-    setPrice,
-    quantity,
-    setQuantity,
     handleSubmit,
   };
 };

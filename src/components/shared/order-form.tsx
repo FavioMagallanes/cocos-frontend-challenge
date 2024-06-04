@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
@@ -17,83 +18,137 @@ type OrderFormProps = {
   onClose: () => void;
 };
 
+type OrderFormData = {
+  operation: "BUY" | "SELL";
+  type: "MARKET" | "LIMIT";
+  price?: number;
+  quantity: number;
+};
+
 export const OrderForm: FC<OrderFormProps> = ({ instrument, onClose }) => {
   const {
-    operation,
-    setOperation,
-    type,
-    setType,
-    price,
-    setPrice,
-    quantity,
-    setQuantity,
-    handleSubmit,
-  } = useOrderForm(instrument, onClose);
+    handleSubmit: handleFormSubmit,
+    control,
+    watch,
+    formState: { errors },
+  } = useForm<OrderFormData>({
+    defaultValues: {
+      operation: "BUY",
+      type: "MARKET",
+      price: undefined,
+      quantity: 0,
+    },
+  });
+
+  const { handleSubmit } = useOrderForm(instrument, onClose);
+
+  const type = watch("type");
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleFormSubmit(handleSubmit)}>
       <div className="grid gap-4 py-4">
         <div className="grid items-center grid-cols-4 gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-800"
-              >
-                <p>{operation}</p>
-                <ChevronDownIcon className="w-4 h-4 ml-auto" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setOperation("BUY")}>
-                Compra
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setOperation("SELL")}>
-                Venta
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Controller
+            name="operation"
+            control={control}
+            render={({ field }) => (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-800"
+                  >
+                    <p>{field.value}</p>
+                    <ChevronDownIcon className="w-4 h-4 ml-auto" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => field.onChange("BUY")}>
+                    Compra
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => field.onChange("SELL")}>
+                    Venta
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          />
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-800"
-              >
-                <p>{type}</p>
-                <ChevronDownIcon className="w-4 h-4 ml-auto" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onClick={() => setType("MARKET")}>
-                Mercado
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setType("LIMIT")}>
-                Límite
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Controller
+            name="type"
+            control={control}
+            render={({ field }) => (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-800"
+                  >
+                    <p>{field.value}</p>
+                    <ChevronDownIcon className="w-4 h-4 ml-auto" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => field.onChange("MARKET")}>
+                    Mercado
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => field.onChange("LIMIT")}>
+                    Límite
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
+          />
         </div>
         {type === "LIMIT" && (
           <div className="grid items-center grid-cols-4 gap-4">
-            <Input
-              id="price"
-              type="number"
-              value={price}
-              onChange={e => setPrice(e.target.value)}
-              placeholder="ARS 0.00"
-              className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300"
+            <Controller
+              name="price"
+              control={control}
+              rules={{ required: "El precio es requerido para órdenes límite" }}
+              render={({ field }) => (
+                <div className="flex flex-col col-span-4">
+                  <Input
+                    id="price"
+                    type="number"
+                    {...field}
+                    placeholder="ARS 0.00"
+                    className="h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 outline-none"
+                  />
+                  {errors.price && (
+                    <span className="text-red-500 text-xs mt-1 font-medium">
+                      {errors.price.message}
+                    </span>
+                  )}
+                </div>
+              )}
             />
           </div>
         )}
         <div className="grid items-center grid-cols-4 gap-4">
-          <Input
-            id="quantity"
-            type="number"
-            value={quantity}
-            onChange={e => setQuantity(e.target.value)}
-            placeholder="Cantidad de acciones"
-            className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300"
+          <Controller
+            name="quantity"
+            control={control}
+            rules={{
+              required: "Cantidad es requerida",
+              min: { value: 1, message: "La cantidad debe ser al menos 1" },
+            }}
+            render={({ field }) => (
+              <div className="flex flex-col col-span-4">
+                <Input
+                  id="quantity"
+                  type="number"
+                  {...field}
+                  placeholder="Cantidad de acciones"
+                  className="h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300"
+                />
+                {errors.quantity && (
+                  <span className="text-red-500 text-xs mt-1 font-medium">
+                    {errors.quantity.message}
+                  </span>
+                )}
+              </div>
+            )}
           />
         </div>
       </div>
