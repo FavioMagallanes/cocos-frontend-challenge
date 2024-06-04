@@ -22,10 +22,12 @@ export interface Portfolio {
 }
 
 export interface OrderItem {
-  productId: string;
+  instrument_id: number;
+  side: "BUY" | "SELL";
+  type: "MARKET" | "LIMIT";
   quantity: number;
+  price?: number;
 }
-
 export interface Order {
   items: OrderItem[];
   total: number;
@@ -33,8 +35,7 @@ export interface Order {
 
 export interface OrderResponse {
   id: string;
-  items: OrderItem[];
-  total: number;
+  status: "PENDING" | "REJECTED" | "FILLED";
 }
 
 export interface Search {

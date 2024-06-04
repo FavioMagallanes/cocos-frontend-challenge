@@ -17,9 +17,9 @@ export const InstrumentsTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedInstrument, setSelectedInstrument] =
     useState<Instruments | null>(null);
-  const { data: instruments, isFetching, isError } = useInstruments();
+  const { data: instruments, isLoading, isError } = useInstruments();
 
-  if (isFetching) return <Spinner />;
+  if (isLoading) return <Spinner />;
   if (isError) return <ErrorMessage />;
 
   const handleRowClick = (instrument: Instruments) => {
