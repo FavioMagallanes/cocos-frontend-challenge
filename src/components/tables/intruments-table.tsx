@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useInstruments } from "@/features/instruments/hooks/use-instruments";
 import {
   Table,
@@ -11,7 +11,7 @@ import {
 import { calculateReturn } from "@/utils";
 import { ErrorMessage, OrderModal, Spinner } from "@/components/shared";
 import { Instruments } from "@/api";
-import { Icon } from "../icon";
+import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 
 export const InstrumentsTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,18 +19,18 @@ export const InstrumentsTable = () => {
     useState<Instruments | null>(null);
   const { data: instruments, isLoading, isError } = useInstruments();
 
-  if (isLoading) return <Spinner />;
-  if (isError) return <ErrorMessage />;
-
-  const handleRowClick = (instrument: Instruments) => {
+  const handleRowClick = useCallback((instrument: Instruments) => {
     setSelectedInstrument(instrument);
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
     setSelectedInstrument(null);
-  };
+  }, []);
+
+  if (isLoading) return <Spinner />;
+  if (isError) return <ErrorMessage />;
 
   return (
     <>
@@ -84,13 +84,13 @@ export const InstrumentsTable = () => {
                 >
                   {returnValue.toFixed(2)}%
                   {isNegative ? (
-                    <Icon
+                    <TrendingDownIcon
                       className="inline ml-1 text-gray-500"
                       size={18}
                       name="trending-down"
                     />
                   ) : (
-                    <Icon
+                    <TrendingUpIcon
                       className="inline ml-1 text-gray-500"
                       size={18}
                       name="trending-up"

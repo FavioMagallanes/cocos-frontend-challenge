@@ -7,7 +7,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Instruments } from "@/api";
-import { OrderForm } from "./order-form";
+import { OrderForm } from "../forms/order-form";
 
 type OrderModalProps = {
   isOpen: boolean;

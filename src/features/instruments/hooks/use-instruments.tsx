@@ -5,6 +5,7 @@ export const useInstruments = () => {
   const query = useQuery({
     queryKey: ["instruments"],
     queryFn: getInstruments,
+    staleTime: 60000,
   });
   return query;
 };

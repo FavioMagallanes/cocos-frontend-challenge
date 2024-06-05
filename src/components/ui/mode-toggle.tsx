@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { useTheme } from "@/context/use-theme";
-import { Icon } from "../icon";
+import { MoonIcon, SunIcon } from "lucide-react";
 
 export const ModeToggle = () => {
   const { setTheme } = useTheme();
@@ -15,11 +15,11 @@ export const ModeToggle = () => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Icon
+          <SunIcon
             className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
             name="sun"
           />
-          <Icon
+          <MoonIcon
             className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
             name="moon"
           />
