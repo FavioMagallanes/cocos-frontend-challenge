@@ -7,14 +7,13 @@ export const Navbar = () => {
     <header className="flex items-center justify-between h-16 px-4 md:px-6 border-b bg-white dark:bg-gray-900 dark:border-gray-800">
       <NavLink to="/" className="flex items-center gap-2 text-lg font-semibold">
         <Logo />
-        <span className="sr-only">Acme Inc</span>
       </NavLink>
       <nav className="flex items-center gap-4 sm:gap-6">
         <NavLink
           to="/"
           className="text-sm font-medium hover:underline underline-offset-4 text-gray-700 dark:text-gray-300"
         >
-          Home
+          Instrumentos
         </NavLink>
         <NavLink
           to="portfolio"
