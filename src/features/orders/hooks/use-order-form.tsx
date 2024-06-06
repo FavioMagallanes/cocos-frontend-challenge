@@ -1,9 +1,9 @@
-import { Instruments, OrderItem, OrderResponse } from "@/api";
+import { OrderData, OrderItem, OrderResponse } from "@/api";
 import { useSubmitOrder } from "@/features/orders/hooks/use-submit-order";
 import { toast } from "sonner";
 
 export const useOrderForm = (
-  instrument: Instruments | null,
+  instrument: OrderData | null,
   onClose: () => void
 ) => {
   const submitOrderMutation = useSubmitOrder();
@@ -17,7 +17,7 @@ export const useOrderForm = (
     if (!instrument) return;
 
     const orderItem: OrderItem = {
-      instrument_id: instrument.id,
+      instrument_id: instrument?.id || 0,
       side: data.operation,
       type: data.type,
       quantity: data.quantity,
@@ -27,18 +27,18 @@ export const useOrderForm = (
     try {
       const response = await submitOrderMutation.mutateAsync(orderItem);
       const toastMessage = `
-        🎉 Orden ${response.id} ${
+      🎉 Orden ${response.id} ${
         response.status === "FILLED" ? "ejecutada" : "enviada"
       } con éxito.
-        ${instrument.ticker} ${
+      ${instrument?.ticker} ${
         data.operation === "BUY" ? "compradas" : "vendidas"
       }: ${orderItem.quantity}
-        ${
-          data.type === "LIMIT"
-            ? `a ARS ${orderItem.price}`
-            : "a precio de mercado"
-        }
-      `;
+      ${
+        data.type === "LIMIT"
+          ? `a ARS ${orderItem.price}`
+          : "a precio de mercado"
+      }
+    `;
       toast.success(toastMessage, {
         duration: 5000,
         action: {
@@ -56,14 +56,14 @@ export const useOrderForm = (
 
   const showDetailToast = (response: OrderResponse, orderItem: OrderItem) => {
     const content = `
-      📋 Detalles de Orden #${response.id}
-      📊 Estado: ${response.status}
-      🏷️ ${instrument?.name} (${instrument?.ticker})
-      ${orderItem.side === "BUY" ? "🛒 Compra" : "💰 Venta"}
-      ${orderItem.type === "MARKET" ? "🌍 Mercado" : "🎯 Límite"}
-      🔢 Cantidad: ${orderItem.quantity}
-      💵 Precio: ${orderItem.price ? `ARS ${orderItem.price}` : "Mercado"}
-    `;
+    📋 Detalles de Orden #${response.id}
+    📊 Estado: ${response.status}
+    🏷️ ${instrument?.name || ""} (${instrument?.ticker || ""})
+    ${orderItem.side === "BUY" ? "🛒 Compra" : "💰 Venta"}
+    ${orderItem.type === "MARKET" ? "🌍 Mercado" : "🎯 Límite"}
+    🔢 Cantidad: ${orderItem.quantity}
+    💵 Precio: ${orderItem.price ? `ARS ${orderItem.price}` : "Mercado"}
+  `;
     toast.info(content, { duration: 7000 });
   };
 

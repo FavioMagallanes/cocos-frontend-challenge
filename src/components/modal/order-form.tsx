@@ -10,12 +10,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { Instruments } from "@/api";
+import { OrderData } from "@/api";
 import { useOrderForm } from "@/features/orders/hooks/use-order-form";
 
 type OrderFormProps = {
-  instrument: Instruments | null;
+  instrument: OrderData | null;
   onClose: () => void;
+  isPortfolio: boolean;
+  showOnlyBuy?: boolean;
 };
 
 type OrderFormData = {
@@ -25,7 +27,11 @@ type OrderFormData = {
   quantity: number;
 };
 
-export const OrderForm: FC<OrderFormProps> = ({ instrument, onClose }) => {
+export const OrderForm: FC<OrderFormProps> = ({
+  instrument,
+  onClose,
+  showOnlyBuy = false,
+}) => {
   const {
     handleSubmit: handleFormSubmit,
     control,
@@ -66,9 +72,11 @@ export const OrderForm: FC<OrderFormProps> = ({ instrument, onClose }) => {
                   <DropdownMenuItem onClick={() => field.onChange("BUY")}>
                     Compra
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => field.onChange("SELL")}>
-                    Venta
-                  </DropdownMenuItem>
+                  {!showOnlyBuy && (
+                    <DropdownMenuItem onClick={() => field.onChange("SELL")}>
+                      Venta
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             )}

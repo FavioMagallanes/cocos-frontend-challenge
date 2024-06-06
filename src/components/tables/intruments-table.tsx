@@ -1,4 +1,3 @@
-import { useState, useCallback } from "react";
 import { useInstruments } from "@/features/instruments/hooks/use-instruments";
 import {
   Table,
@@ -9,25 +8,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { calculateReturn } from "@/utils";
-import { ErrorMessage, OrderModal, Spinner } from "@/components/shared";
-import { Instruments } from "@/api";
+import { ErrorMessage, Spinner } from "@/components/shared";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
+import { OrderModal, useModalState } from "../modal";
 
 export const InstrumentsTable = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedInstrument, setSelectedInstrument] =
-    useState<Instruments | null>(null);
+  const { isModalOpen, selectedItem, openModal, closeModal } = useModalState();
   const { data: instruments, isLoading, isError } = useInstruments();
-
-  const handleRowClick = useCallback((instrument: Instruments) => {
-    setSelectedInstrument(instrument);
-    setIsModalOpen(true);
-  }, []);
-
-  const handleModalClose = useCallback(() => {
-    setIsModalOpen(false);
-    setSelectedInstrument(null);
-  }, []);
 
   if (isLoading) return <Spinner />;
   if (isError) return <ErrorMessage />;
@@ -62,7 +49,7 @@ export const InstrumentsTable = () => {
               <TableRow
                 key={item.ticker}
                 className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
-                onClick={() => handleRowClick(item)}
+                onClick={() => openModal(item, "instruments")}
               >
                 <TableCell className="text-gray-500 font-medium">
                   {item.ticker}
@@ -104,8 +91,9 @@ export const InstrumentsTable = () => {
       </Table>
       <OrderModal
         isOpen={isModalOpen}
-        onClose={handleModalClose}
-        instrument={selectedInstrument}
+        onClose={closeModal}
+        orderData={selectedItem}
+        isFromInstrumentsTable
       />
     </>
   );

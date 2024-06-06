@@ -1,3 +1,12 @@
+export interface OrderData {
+  id: number;
+  ticker: string;
+  name: string;
+  lastPrice: number;
+  closePrice: number;
+  quantity?: number;
+}
+
 export interface Instruments {
   id: number;
   ticker: string;
