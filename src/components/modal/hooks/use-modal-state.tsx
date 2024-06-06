@@ -22,6 +22,7 @@ export const useModalState = () => {
     item: Instruments | Portfolio,
     itemType: "instruments" | "portfolio"
   ) => {
+    // Mapea el elemento pasado al tipo OrderData correspondiente utilizando las funciones de mapeo adecuadas
     const mappedItem =
       itemType === "instruments"
         ? mapInstrumentToOrderData(item as Instruments)
@@ -30,9 +31,8 @@ export const useModalState = () => {
     setModalState({ selectedItem: mappedItem, isModalOpen: true, itemType });
   };
 
-  const closeModal = () => {
+  const closeModal = () =>
     setModalState({ ...modalState, isModalOpen: false, itemType: null });
-  };
 
   return {
     selectedItem: modalState.selectedItem,

@@ -1,17 +1,11 @@
 import { FC } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { ChevronDownIcon } from "lucide-react";
+import { useOrderForm } from "@/features/orders/hooks/use-order-form";
 import { Button } from "@/components/ui/button";
 import { DialogFooter } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { OrderData } from "@/api";
-import { useOrderForm } from "@/features/orders/hooks/use-order-form";
+import { ModalMenuItem } from "./modal-menu-item";
 
 type OrderFormProps = {
   instrument: OrderData | null;
@@ -58,27 +52,11 @@ export const OrderForm: FC<OrderFormProps> = ({
             name="operation"
             control={control}
             render={({ field }) => (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-800"
-                  >
-                    <p>{field.value}</p>
-                    <ChevronDownIcon className="w-4 h-4 ml-auto" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => field.onChange("BUY")}>
-                    Buy
-                  </DropdownMenuItem>
-                  {!showOnlyBuy && (
-                    <DropdownMenuItem onClick={() => field.onChange("SELL")}>
-                      Sell
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <ModalMenuItem
+                value={field.value}
+                options={showOnlyBuy ? ["BUY"] : ["BUY", "SELL"]}
+                onChange={value => field.onChange(value)}
+              />
             )}
           />
 
@@ -86,25 +64,11 @@ export const OrderForm: FC<OrderFormProps> = ({
             name="type"
             control={control}
             render={({ field }) => (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="col-span-4 h-10 rounded-md bg-white dark:bg-gray-800 dark:text-gray-300 dark:border-gray-800"
-                  >
-                    <p>{field.value}</p>
-                    <ChevronDownIcon className="w-4 h-4 ml-auto" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => field.onChange("MARKET")}>
-                    Market
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => field.onChange("LIMIT")}>
-                    Limit
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <ModalMenuItem
+                value={field.value}
+                options={["MARKET", "LIMIT"]}
+                onChange={value => field.onChange(value)}
+              />
             )}
           />
         </div>

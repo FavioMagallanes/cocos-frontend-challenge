@@ -1,3 +1,16 @@
+/**
+ * El hook useOrderForm gestiona el envío de órdenes de compra o venta de instrumentos financieros,
+ * mostrando mensajes con los detalles de la orden y gestionando los errores.
+ * @param {OrderData | null} instrument - El parámetro `instrument` en el hook `useOrderForm
+ * representa los datos del instrumento financiero para el que se está realizando la orden. Es del tipo
+ * `OrderData | null`, donde `OrderData` es un tipo que probablemente contiene información sobre el
+ * instrumento como su ID, nombre,
+ * @param onClose - El parámetro `onClose` de la función `useOrderForm` es una función a la que se llama
+ * cuando el formulario de pedido se cierra o se envía. Se utiliza normalmente para cerrar o descartar el formulario de pedido
+ * modal o diálogo.
+ * @returns El hook devuelve un objeto con una única propiedad
+ * `handleSubmit`, que es una función utilizada para manejar el envío de un pedido.
+ */
 import { OrderData, OrderItem, OrderResponse } from "@/api";
 import { useSubmitOrder } from "@/features/orders/hooks/use-submit-order";
 import { toast } from "sonner";

@@ -46,12 +46,3 @@ export interface OrderResponse {
   id: string;
   status: "PENDING" | "REJECTED" | "FILLED";
 }
-
-export interface Search {
-  id: number;
-  ticker: string;
-  name: string;
-  type: string;
-  last_price: number;
-  close_price: number;
-}

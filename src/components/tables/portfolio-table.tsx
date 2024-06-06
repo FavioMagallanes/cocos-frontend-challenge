@@ -10,9 +10,9 @@ import {
 import { calculateGain, calculateMarketValue, calculateReturn } from "@/utils";
 import { ErrorMessage, SearchInput } from "@/components/shared";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
-import { OrderModal, useModalState } from "../modal";
 import { useFilteredData } from "@/hooks/use-filtered-data";
 import { Portfolio } from "@/api";
+import { OrderModal, useModalState } from "../modal";
 import { Fade } from "react-awesome-reveal";
 
 export const PortfolioTable = () => {

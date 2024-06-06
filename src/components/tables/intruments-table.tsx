@@ -11,8 +11,8 @@ import {
 import { calculateReturn } from "@/utils";
 import { ErrorMessage, SearchInput } from "@/components/shared";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
-import { OrderModal, useModalState } from "../modal";
 import { Instruments } from "@/api";
+import { OrderModal, useModalState } from "../modal";
 import { Fade } from "react-awesome-reveal";
 
 export const InstrumentsTable = () => {

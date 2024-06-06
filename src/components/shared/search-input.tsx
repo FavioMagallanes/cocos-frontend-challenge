@@ -1,6 +1,6 @@
-import { SearchIcon } from "lucide-react";
-import { Input } from "../ui/input";
 import { FC } from "react";
+import { Input } from "../ui/input";
+import { SearchIcon } from "lucide-react";
 
 type SearchInputProps = {
   onSearch: (value: string) => void;
