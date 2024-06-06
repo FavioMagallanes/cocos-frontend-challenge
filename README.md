@@ -1,30 +1,35 @@
-# React + TypeScript + Vite
+# Cocos Frontend Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esta es una aplicación web/app desarrollada para el desafío técnico de Cocos. La aplicación permite visualizar información de instrumentos financieros, un portafolio de activos, realizar búsquedas y enviar órdenes de compra/venta.
 
-Currently, two official plugins are available:
+## Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Visualizar listado de instrumentos con ticker, nombre, último precio y retorno.
+- Visualizar portafolio de activos con ticker, cantidad, valor de mercado, ganancia y rendimiento total.
+- Buscador de activos por ticker.
+- Enviar órdenes de compra/venta (MARKET o LIMIT) y ver el estado de la orden.
 
-## Expanding the ESLint configuration
+## Tecnologías utilizadas
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React
+- TypeScript
+- Vite
+- React Query
+- Tailwind CSS
+- Shadcn/UI
+- Axios
 
-- Configure the top-level `parserOptions` property like this:
+## Instalación
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+1. Clona el repositorio: `https://github.com/FavioMagallanes/cocos-frontend-challenge.git`
+2. Navega al directorio del proyecto: `cd cocos-frontend-challenge`
+3. Instala las dependencias: `npm install`
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Uso
+
+1. Inicia la aplicación en modo desarrollador: `npm run dev`
+2. Abre tu navegador en `http://localhost:5173` para ver la aplicación en acción.
+
+## Contacto
+
+Si tienes alguna pregunta o sugerencia, puedes contactarme a través de [LinkedIn](https://www.linkedin.com/in/favio-magallanes/).
