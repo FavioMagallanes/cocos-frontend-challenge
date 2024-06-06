@@ -1,3 +1,4 @@
+import { useFilteredData } from "@/hooks/use-filtered-data"; // Importa el custom hook
 import { useInstruments } from "@/features/instruments/hooks/use-instruments";
 import {
   Table,
@@ -8,20 +9,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { calculateReturn } from "@/utils";
-import { ErrorMessage, Spinner } from "@/components/shared";
+import { ErrorMessage, Spinner, SearchInput } from "@/components/shared";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { OrderModal, useModalState } from "../modal";
+import { Instruments } from "@/api";
 
 export const InstrumentsTable = () => {
   const { isModalOpen, selectedItem, openModal, closeModal } = useModalState();
   const { data: instruments, isLoading, isError } = useInstruments();
+  const {
+    searchTerm,
+    setSearchTerm,
+    filteredData: filteredInstruments,
+  } = useFilteredData<Instruments, "ticker">(instruments || [], "ticker");
 
   if (isLoading) return <Spinner />;
   if (isError) return <ErrorMessage />;
 
   return (
     <>
-      <Table>
+      <SearchInput searchTerm={searchTerm} onSearch={setSearchTerm} />
+      <Table className="mt-12">
         <TableHeader>
           <TableRow>
             <TableHead className="text-gray-700 font-semibold dark:text-gray-300">
@@ -39,7 +47,7 @@ export const InstrumentsTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {instruments?.map(item => {
+          {filteredInstruments?.map((item: Instruments) => {
             const returnValue = calculateReturn(
               item.last_price,
               item.close_price

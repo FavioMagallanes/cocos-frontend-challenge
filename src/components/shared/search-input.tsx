@@ -1,14 +1,26 @@
 import { SearchIcon } from "lucide-react";
 import { Input } from "../ui/input";
+import { FC } from "react";
 
-export const SearchInput = () => {
+type SearchInputProps = {
+  onSearch: (value: string) => void;
+  searchTerm: string;
+};
+
+export const SearchInput: FC<SearchInputProps> = ({ onSearch, searchTerm }) => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(e.target.value);
+  };
+
   return (
     <div className="relative flex items-center max-w-md bg-white dark:bg-gray-800 dark:text-gray-300 rounded-md">
       <Input
         type="search"
         id="searchInput"
         placeholder="Filtrar por ticker..."
+        value={searchTerm}
         className="flex-1 bg-transparent border focus:ring-0 focus:outline-none pl-4 pr-10"
+        onChange={handleSearchChange}
       />
 
       <div className="absolute right-3">

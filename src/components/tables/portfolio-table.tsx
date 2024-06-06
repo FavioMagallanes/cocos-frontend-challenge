@@ -8,20 +8,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { calculateGain, calculateMarketValue, calculateReturn } from "@/utils";
-import { ErrorMessage, Spinner } from "@/components/shared";
+import { ErrorMessage, Spinner, SearchInput } from "@/components/shared";
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import { OrderModal, useModalState } from "../modal";
+import { useFilteredData } from "@/hooks/use-filtered-data";
+import { Portfolio } from "@/api";
 
 export const PortfolioTable = () => {
   const { isModalOpen, selectedItem, openModal, closeModal } = useModalState();
   const { data: portfolio, isLoading, isError } = usePortfolio();
+  const {
+    searchTerm,
+    setSearchTerm,
+    filteredData: filteredPortfolio,
+  } = useFilteredData<Portfolio, "ticker">(portfolio || [], "ticker");
 
   if (isLoading) return <Spinner />;
   if (isError) return <ErrorMessage />;
 
   return (
     <>
-      <Table>
+      <SearchInput searchTerm={searchTerm} onSearch={setSearchTerm} />
+      <Table className="mt-12">
         <TableHeader>
           <TableRow>
             <TableHead className="text-gray-700 font-semibold dark:text-gray-300">
@@ -42,7 +50,7 @@ export const PortfolioTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {portfolio?.map((item, index) => {
+          {filteredPortfolio?.map((item: Portfolio, index: number) => {
             const marketValue = calculateMarketValue(
               item.quantity,
               item.last_price
