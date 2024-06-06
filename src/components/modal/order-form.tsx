@@ -70,11 +70,11 @@ export const OrderForm: FC<OrderFormProps> = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem onClick={() => field.onChange("BUY")}>
-                    Compra
+                    Buy
                   </DropdownMenuItem>
                   {!showOnlyBuy && (
                     <DropdownMenuItem onClick={() => field.onChange("SELL")}>
-                      Venta
+                      Sell
                     </DropdownMenuItem>
                   )}
                 </DropdownMenuContent>
@@ -98,10 +98,10 @@ export const OrderForm: FC<OrderFormProps> = ({
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuItem onClick={() => field.onChange("MARKET")}>
-                    Mercado
+                    Market
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => field.onChange("LIMIT")}>
-                    Límite
+                    Limit
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -163,7 +163,7 @@ export const OrderForm: FC<OrderFormProps> = ({
       <DialogFooter className="flex justify-end gap-2">
         <Button
           type="submit"
-          className="h-10 rounded-md bg-gray-900 text-gray-50 hover:bg-gray-900/90 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90"
+          className="h-10 rounded-md bg-[#0062E1] text-gray-50 hover:bg-[#002C65] dark:bg-[#0062E1] dark:text-gray-50 dark:hover:bg-[#002C65]"
         >
           Enviar orden
         </Button>

@@ -7,7 +7,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { OrderData } from "@/api";
-import { OrderForm } from "../modal/order-form";
+import { OrderForm } from "./order-form";
 
 type OrderModalProps = {
   isOpen: boolean;
@@ -25,12 +25,18 @@ export const OrderModal: FC<OrderModalProps> = ({
   <Dialog open={isOpen} onOpenChange={onClose}>
     <DialogContent className="sm:max-w-[425px] p-6 rounded-lg shadow-lg bg-white dark:bg-gray-900">
       <DialogHeader>
-        <DialogTitle className="text-gray-900 dark:text-gray-100">
+        <DialogTitle className="text-[#002C65] mb-2 dark:text-gray-100">
           {orderData?.name} ({orderData?.ticker})
         </DialogTitle>
-        <DialogDescription className="text-gray-600 dark:text-gray-400">
-          Realice una orden de compra o venta de {orderData?.name}
-        </DialogDescription>
+        {orderData?.name && (
+          <DialogDescription className="text-gray-600 text-xs dark:text-gray-400">
+            Realice una orden de compra o venta de:{" "}
+            <span className="text-[#0062E1] font-semibold">
+              {" "}
+              {orderData?.name}
+            </span>
+          </DialogDescription>
+        )}
       </DialogHeader>
       <OrderForm
         instrument={orderData}
