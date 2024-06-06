@@ -2,6 +2,10 @@
 
 Esta es una aplicación web/app desarrollada para el desafío técnico de Cocos. La aplicación permite visualizar información de instrumentos financieros, un portafolio de activos, realizar búsquedas y enviar órdenes de compra/venta.
 
+## Demo
+
+Puedes ver una demostración en vivo de la aplicación en: [https://faviomagallanes.github.io/cocos-frontend-challenge/](https://faviomagallanes.github.io/cocos-frontend-challenge/)
+
 ## Características
 
 - Visualizar listado de instrumentos con ticker, nombre, último precio y retorno.
