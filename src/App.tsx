@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./components/layout";
-import { Spinner } from "./components/shared/spinner.tsx"; // Asumiendo que tienes un componente Spinner para mostrar mientras carga
+import { Spinner } from "./components/shared/spinner.tsx";
 
 const LazyInstrumentsPage = lazy(() =>
   import("./pages").then(module => ({ default: module.InstrumentsPage }))
