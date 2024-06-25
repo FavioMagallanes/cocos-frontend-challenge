@@ -1,31 +1,15 @@
-import { lazy, Suspense } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { MainLayout } from "./components/layout";
-import { Spinner } from "./components/shared/spinner.tsx";
-
-const LazyInstrumentsPage = lazy(() =>
-  import("./pages").then(module => ({ default: module.InstrumentsPage }))
-);
-const LazyPortfolioPage = lazy(() =>
-  import("./pages").then(module => ({ default: module.PortfolioPage }))
-);
+import { InstrumentsPage, PortfolioPage } from "./pages";
 
 export const App = () => {
   return (
-    <Router>
+    <Router basename="/cocos-frontend-challenge">
       <MainLayout>
-        <Suspense
-          fallback={
-            <div className="flex justify-center items-center min-h-screen">
-              <Spinner />
-            </div>
-          }
-        >
-          <Routes>
-            <Route path="/" element={<LazyInstrumentsPage />} />
-            <Route path="/portfolio" element={<LazyPortfolioPage />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<InstrumentsPage />} />
+          <Route path="/portfolio" element={<PortfolioPage />} />
+        </Routes>
       </MainLayout>
     </Router>
   );
